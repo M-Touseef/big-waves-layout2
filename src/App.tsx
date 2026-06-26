@@ -144,7 +144,9 @@ function App() {
   const [navScrolled, setNavScrolled] = useState(false)
   const [preloaderFade, setPreloaderFade] = useState(false)
   const [preloaderHidden, setPreloaderHidden] = useState(false)
-  const [popups, setPopups] = useState<Array<{id: number; top: string; right: string}>>([])
+  const [popups, setPopups] = useState<Array<{id: number; top: string; right: string}>>([]);
+  const [toastPos, setToastPos] = useState<{ top: string; right: string }>({ top: '0%', right: '0%' });
+  const [showToast, setShowToast] = useState(false);
   // Generate a random popup every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -409,6 +411,13 @@ function App() {
   }
 
   return (
+    {showToast && (
+      <div style={{ position: 'fixed', top: toastPos.top, right: toastPos.right, zIndex: 1000 }}>
+        <div className="bg-gold text-navy px-3 py-1 rounded shadow-lg animate-fade-in">
+          🎉 Form submitted!
+        </div>
+      </div>
+    )
     <div className="relative min-h-screen bg-navy text-pearl selection:bg-gold/30 selection:text-gold">
       
       {/* ── PRELOADER ── */}
@@ -835,26 +844,11 @@ function App() {
             From the depths<br />
             <span className="italic text-pearl/50">of ambition</span>
           </h2>
-        </div>
-      </section>
-
-      {/* ── TOAST NOTIFICATION ── */}
-      <div 
-        className={`fixed z-50 bg-deep border border-gold py-5 px-7 rounded-[2px] shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex items-center gap-4 transition-all duration-500 ease-out ${showToast ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        style={showToast ? { top: toastPos.top, right: toastPos.right } : {}}
-        role="alert" 
-        aria-live="polite"
-      >
-        <CheckCircle2 className="w-6 h-6 text-gold" />
-        <div>
-          <h5 className="font-montserrat text-[11px] font-semibold text-gold uppercase tracking-[0.15em] mb-1">
-            Transmission Successful
-          </h5>
           <p className="font-montserrat text-xs text-pearl-dim">
             Coordinates received. We will contact you shortly.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* ── MERGED CONTACT & FOOTER ── */}
       <footer id="contact" className="bg-[#020810] pt-32 pb-12 px-6 md:px-16 relative z-20 border-t border-gold/10">
