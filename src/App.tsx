@@ -3,7 +3,7 @@ import { GlobeBars } from "@/components/ui/cobe-globe-bars"
 import { 
   Menu, 
   X, 
-  CheckCircle2, 
+ 
   ExternalLink, 
   MapPin, 
   Mail, 
@@ -144,23 +144,10 @@ function App() {
   const [navScrolled, setNavScrolled] = useState(false)
   const [preloaderFade, setPreloaderFade] = useState(false)
   const [preloaderHidden, setPreloaderHidden] = useState(false)
-  const [popups, setPopups] = useState<Array<{id: number; top: string; right: string}>>([]);
+
   const [toastPos, setToastPos] = useState<{ top: string; right: string }>({ top: '0%', right: '0%' });
   const [showToast, setShowToast] = useState(false);
-  // Generate a random popup every 4 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const id = Date.now()
-      const top = `${Math.floor(Math.random() * 80) + 10}%`
-      const right = `${Math.floor(Math.random() * 80) + 10}%`
-      setPopups((prev) => [...prev, { id, top, right }])
-      // Auto-remove after 5s
-      setTimeout(() => {
-        setPopups((prev) => prev.filter((p) => p.id !== id))
-      }, 5000)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [])
+
 
   const [heroIndex, setHeroIndex] = useState(0)
 
@@ -411,16 +398,17 @@ function App() {
   }
 
   return (
-    {showToast && (
-      <div style={{ position: 'fixed', top: toastPos.top, right: toastPos.right, zIndex: 1000 }}>
-        <div className="bg-gold text-navy px-3 py-1 rounded shadow-lg animate-fade-in">
-          🎉 Form submitted!
+    <>
+      {showToast && (
+        <div style={{ position: 'fixed', top: toastPos.top, right: toastPos.right, zIndex: 1000 }}>
+          <div className="bg-gold text-navy px-3 py-1 rounded shadow-lg animate-fade-in">
+            🎉 Form submitted!
+          </div>
         </div>
-      </div>
-    )
-    <div className="relative min-h-screen bg-navy text-pearl selection:bg-gold/30 selection:text-gold">
-      
-      {/* ── PRELOADER ── */}
+      )}
+      <div className="relative min-h-screen bg-navy text-pearl selection:bg-gold/30 selection:text-gold">
+        
+        {/* ── PRELOADER ── */}
       {!preloaderHidden && (
         <div 
           id="preloader" 
@@ -962,6 +950,7 @@ function App() {
         </div>
       </footer>
     </div>
+</>
   )
 }
 
